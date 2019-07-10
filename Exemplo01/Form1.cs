@@ -33,9 +33,9 @@ namespace Exemplo01
         {
             BindingSource bs = new BindingSource();
 
-            var query = from t in tmContext.Tasks
-                        orderby t.Data
-                        select new { t.Id, Tarefa = t.Nome, Status = t.Status.Nome, Prazo = t.Data };
+            var query = from tarefa in tmContext.Tasks
+                        orderby tarefa.Data
+                        select new { tarefa.Id, Tarefa = tarefa.Nome, Status = tarefa.Status.Nome, Prazo = tarefa.Data };
 
             bs.DataSource = query.ToList();
 
