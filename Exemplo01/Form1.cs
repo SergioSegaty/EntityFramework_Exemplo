@@ -85,29 +85,37 @@ namespace Exemplo01
 
         private void btnAtualizar_Click(object sender, EventArgs e)
         {
-            if (btnAtualizar.Text == "Atualizar")
+            if (dataGridView1.SelectedRows.Count == 0)
             {
-                txtTarefa.Text = dataGridView1.SelectedCells[1].Value.ToString();
-                dtpData.Value = (DateTime)dataGridView1.SelectedCells[3].Value;
-                foreach (Status status in cbStatus.Items)
-                {
-                    if (status.Nome == dataGridView1.SelectedCells[2].Value.ToString())
-                    {
-                        cbStatus.SelectedItem = status;
-                    }
-                }
-                btnAtualizar.Text = "Salvar";
+                MessageBox.Show("Selecione uma Linha", "AVISO");
             }
-            else if (btnAtualizar.Text == "Salvar")
+            else
             {
-                var tarefa = tmContext.Tasks.Find((int)dataGridView1.SelectedCells[0].Value);
-                tarefa.Nome = txtTarefa.Text;
-                tarefa.StatusId = (cbStatus.SelectedItem as Status).Id;
-                tarefa.Data = dtpData.Value;
 
-                tmContext.SaveChanges();
-                RefreshData();
-                LimparForm();
+                if (btnAtualizar.Text == "Atualizar")
+                {
+                    txtTarefa.Text = dataGridView1.SelectedCells[1].Value.ToString();
+                    dtpData.Value = (DateTime)dataGridView1.SelectedCells[3].Value;
+                    foreach (Status status in cbStatus.Items)
+                    {
+                        if (status.Nome == dataGridView1.SelectedCells[2].Value.ToString())
+                        {
+                            cbStatus.SelectedItem = status;
+                        }
+                    }
+                    btnAtualizar.Text = "Salvar";
+                }
+                else if (btnAtualizar.Text == "Salvar")
+                {
+                    var tarefa = tmContext.Tasks.Find((int)dataGridView1.SelectedCells[0].Value);
+                    tarefa.Nome = txtTarefa.Text;
+                    tarefa.StatusId = (cbStatus.SelectedItem as Status).Id;
+                    tarefa.Data = dtpData.Value;
+
+                    tmContext.SaveChanges();
+                    RefreshData();
+                    LimparForm();
+                }
             }
 
         }
@@ -117,7 +125,12 @@ namespace Exemplo01
             btnAtualizar.Text = "Atualizar";
             txtTarefa.Clear();
             dtpData.Value = DateTime.Now;
-            cbStatus.Text = "Selecione uma Opção...";
+            cbStatus.SelectedIndex = -1;
+        }
+
+        private void btnCancelar_Click(object sender, EventArgs e)
+        {
+            LimparForm();
         }
     }
 }
